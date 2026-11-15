@@ -210,3 +210,6 @@
 # Wlschgd
 /(odm|vendor/odm)/bin/hw/wlschgd      u:object_r:wlschgd_exec:s0
 /dev/wls_dev                          u:object_r:wlschgd_device:s0
+
+# Widevine
+/vendor/bin/wvmkiller                 u:object_r:vendor_wvmkiller_exec:s0
