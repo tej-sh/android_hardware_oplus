@@ -38,7 +38,17 @@ ifeq ($(TARGET_BOARD_PLATFORM),pineapple)
         hardware/oplus/sepolicy/qti/vendor/sm8650
 endif
 
-include device/lineage/sepolicy/libperfmgr/sepolicy.mk
+# libperfmgr sepolicy ships under device/<rom>/sepolicy in non-Lineage trees.
+# Pick whichever path exists so the same hardware/oplus works on Clover,
+# Voltage and Lineage.
+LIBPERFMGR_SEPOLICY := $(firstword $(wildcard \
+    device/lineage/sepolicy/libperfmgr/sepolicy.mk \
+    device/clover/sepolicy/libperfmgr/sepolicy.mk \
+    device/voltage/sepolicy/libperfmgr/sepolicy.mk))
+
+ifneq ($(LIBPERFMGR_SEPOLICY),)
+include $(LIBPERFMGR_SEPOLICY)
+endif
 
 SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS := $(shell echo $(SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS) | tr ' ' '\n' | sort -u | tr '\n' ' ')
 SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS := $(shell echo $(SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS) | tr ' ' '\n' | sort -u | tr '\n' ' ')
